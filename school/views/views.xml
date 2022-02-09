@@ -17,8 +17,20 @@
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="school.action_student_window">
-      <field name="name">school student window</field>
+      <field name="name">Alumnos</field>
       <field name="res_model">school.student</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="school.action_classroom_window">
+      <field name="name">Clases</field>
+      <field name="res_model">school.classroom</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="school.action_teacher_window">
+      <field name="name">Profesores</field>
+      <field name="res_model">school.teacher</field>
       <field name="view_mode">tree,form</field>
     </record>
 
@@ -51,6 +63,9 @@
 
     <menuitem name="Students" id="school.menu_student_list" parent="school.menu_1"
       action="school.action_student_window"/>
-
+    <menuitem name="Classrooms" id="school.menu_classroom_list" parent="school.menu_1"
+      action="school.action_classroom_window"/>
+    <menuitem name="Teachers" id="school.menu_teacher_list" parent="school.menu_1"
+      action="school.action_teacher_window"/>
   </data>
 </odoo>
