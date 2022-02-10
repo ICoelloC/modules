@@ -16,8 +16,8 @@ class student(models.Model):
     is_student = fields.Boolean()
     photo = fields.Image()
 
-    classroom = fields.Many2one('school.classroom', string="Clase")
-    teachers = fields.Many2many('school.teacher')
+    classroom = fields.Many2one('school.classroom', ondelete='set null', help="Clase a la que pertenece el alumno")
+    teachers = fields.Many2many('school.teacher', related='classroom.teachers', readonly=True, help='Profesores de la clase')
 
 
 class classroom(models.Model):
@@ -26,13 +26,17 @@ class classroom(models.Model):
 
     name = fields.Char()
 
-    students = fields.One2many('school.student','classroom')
-    teachers = fields.Many2many('school.teacher')
+    students = fields.One2many(string='Alumnos', comodel_name='school.student', inverse_name='classroom')
+    teachers = fields.Many2many(comodel_name='school.teacher', relation='teachers_classroom', column1='classroom_id', column2='teacher_id')
+
+    teachers_last_year = fields.Many2many(comodel_name='school.teacher', relation='teachers_classroom_ly', column1='classroom_id', column2='teacher_id')
 
 class teacher(models.Model):
     _name = 'school.teacher'
     _description = 'Los profesores'
 
     name = fields.Char()
-    classrooms = fields.Many2many('school.classroom')
+    classrooms = fields.Many2many(comodel_name='school.classroom', relation='teachers_classroom', column1='teacher_id', column2='classroom_id')
     students = fields.Many2many('school.student')
+
+    classrooms_last_year = fields.Many2many(comodel_name='school.classroom', relation='teachers_classroom_ly', column1='teacher_id', column2='classroom_id')
