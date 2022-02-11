@@ -1,28 +1,29 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="dev_meet.list">
+
+    <record model="ir.ui.view" id="dev_meet.developer_list">
       <field name="name">DevMeet list</field>
-      <field name="model">dev_meet.dev_meet</field>
+      <field name="model">dev_meet.developer</field>
       <field name="arch" type="xml">
         <tree>
+          <field name="dni"/>
+          <field name="nickname"/>
           <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
+          <field name="email"/>
         </tree>
       </field>
     </record>
--->
+
 
     <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="dev_meet.action_window">
-      <field name="name">DevMeet window</field>
-      <field name="res_model">dev_meet.dev_meet</field>
+
+    <record model="ir.actions.act_window" id="dev_meet.action_developer_window">
+      <field name="name">Desarrolladores</field>
+      <field name="res_model">dev_meet.developer</field>
       <field name="view_mode">tree,form</field>
     </record>
--->
+
 
     <!-- server action to the one above -->
 <!--
@@ -41,20 +42,17 @@
 -->
 
     <!-- Top menu item -->
-<!--
+
     <menuitem name="DevMeet" id="dev_meet.menu_root"/>
--->
+
     <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="dev_meet.menu_1" parent="dev_meet.menu_root"/>
-    <menuitem name="Menu 2" id="dev_meet.menu_2" parent="dev_meet.menu_root"/>
--->
+
+    <menuitem name="Personas" id="dev_meet.menu_people" parent="dev_meet.menu_root"/>
+
     <!-- actions -->
-<!--
-    <menuitem name="List" id="dev_meet.menu_1_list" parent="dev_meet.menu_1"
-              action="dev_meet.action_window"/>
-    <menuitem name="Server to list" id="dev_meet" parent="dev_meet.menu_2"
-              action="dev_meet.action_server"/>
--->
+
+    <menuitem name="Desarrolladores" id="dev_meet.menu_developers_list" parent="dev_meet.menu_people"
+              action="dev_meet.action_developer_window"/>
+
   </data>
 </odoo>
