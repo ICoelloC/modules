@@ -36,6 +36,12 @@
       <field name="view_mode">tree,form</field>
     </record>
 
+    <record model="ir.actions.act_window" id="dev_meet.action_room_window">
+      <field name="name">Salas</field>
+      <field name="res_model">dev_meet.room</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
 
     <!-- server action to the one above -->
 <!--
@@ -60,11 +66,10 @@
     <!-- menu categories -->
 
     <!-- <menuitem name="Tecnologías" id="dev_meet.menu_technology" parent="dev_meet.menu_root"/> -->
-    <menuitem name="Personas" id="dev_meet.menu_people" parent="dev_meet.menu_root"/>
 
     <!-- actions -->
 
-    <menuitem name="Desarrolladores" id="dev_meet.menu_developers_list" parent="dev_meet.menu_people"
+    <menuitem name="Desarrolladores" id="dev_meet.menu_developers_list" parent="dev_meet.menu_root"
               action="dev_meet.action_developer_window"/>
 
     <menuitem name="Tecnologías" id="dev_meet.menu_technology_list" parent="dev_meet.menu_root"
@@ -72,6 +77,9 @@
 
     <menuitem name="Eventos" id="dev_meet.menu_event_list" parent="dev_meet.menu_root"
               action="dev_meet.action_event_window"/>
+
+    <menuitem name="Eventos" id="dev_meet.menu_room_list" parent="dev_meet.menu_root"
+              action="dev_meet.action_room_window"/>
 
   </data>
 </odoo>

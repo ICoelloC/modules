@@ -16,7 +16,7 @@ class developer(models.Model):
     phone = fields.Char(string='Teléfono', help='Teléfono móvil')
 
     technologies_learned = fields.Many2many(name='Lenguajes aprendidos', comodel_name='dev_meet.technology', help='Tecnpologías aprendidas')
-
+    events_as_speaker = fields.One2many(comodel_name='dev_meet.event', inverse_name='speaker')
 
 
 class technology(models.Model):
@@ -29,7 +29,10 @@ class technology(models.Model):
     official_web = fields.Char(
         string='Página oficial', help='Página web oficial')
 
-    developers = fields.Many2many(comodel_name='dev_meet.developer')
+    developers = fields.Many2many(name ='Desarrolladores', comodel_name='dev_meet.developer')
+    events = fields.Many2many(comodel_name='dev_meet.event', inverse_name='technologies')
+
+    
 
 
 class event(models.Model):
@@ -37,4 +40,21 @@ class event(models.Model):
     _description = 'Events'
 
     name = fields.Char(string='Nombre', required=True, help='Nombre del evento')
+    start_date = fields.Datetime(string='Fecha de inicio', required=True, help='Fecha de inicio del evento')
+    end_date = fields.Datetime(string='Fecha de fin', required=True, help='Fecha de fin del evento')
+    presential = fields.Boolean(string='Es presencial', help='Evento presencial')
+
+    room = fields.Many2one(name='Sala', comodel_name='dev_meet.room', help='Sala donde se realizará el evento')
+    technologies = fields.Many2many(name='Tecnologías', comodel_name='dev_meet.technology', help='Tecnologías vistas en el evento')
+
+    speaker = fields.Many2one(name='Speakers', comodel_name='dev_meet.developer', help='Speaker del evento')
+
+class room(models.Model):
+    _name = 'dev_meet.room'
+    _description = 'Room'
+
+    room_number = fields.Integer(string='Número de sala', required=True, help='Número de sala')
+    name = fields.Char(string='Nombre de la sala', required=True, help='Nombre de la sala')
+    capacity = fields.Integer(string='Capacidad', required=True, help='Capacidad de la sala')
     
+    events = fields.One2many(name='Eventos', comodel_name='dev_meet.event', help='Eventos que se realizarán en la sala', inverse_name='room')
