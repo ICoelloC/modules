@@ -15,6 +15,9 @@ class developer(models.Model):
     email = fields.Char(string='Email', help='Correo electrónico')
     phone = fields.Char(string='Teléfono', help='Teléfono móvil')
 
+    technologies_learned = fields.Many2many(name='Lenguajes aprendidos', comodel_name='dev_meet.technology', help='Tecnpologías aprendidas')
+
+
 
 class technology(models.Model):
     _name = 'dev_meet.technology'
@@ -25,3 +28,13 @@ class technology(models.Model):
     logo = fields.Image(string='Logo', help='Logo de la tecnología')
     official_web = fields.Char(
         string='Página oficial', help='Página web oficial')
+
+    developers = fields.Many2many(comodel_name='dev_meet.developer')
+
+
+class event(models.Model):
+    _name = 'dev_meet.event'
+    _description = 'Events'
+
+    name = fields.Char(string='Nombre', required=True, help='Nombre del evento')
+    
