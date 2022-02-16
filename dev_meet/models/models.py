@@ -16,6 +16,9 @@ class developer(models.Model):
     phone = fields.Char(string='Teléfono', help='Teléfono móvil')
 
     technologies_learned = fields.Many2many(string='Lenguajes aprendidos', comodel_name='dev_meet.technology', help='Tecnpologías aprendidas')
+
+    interested_technologies = fields.Many2many(string='Tecnologías interesadas', comodel_name='dev_meet.technology', relation='interested_technologies', help='Tecnpologías interesadas')
+
     events_as_speaker = fields.One2many(string='Speaker en', comodel_name='dev_meet.event', inverse_name='speaker')
 
 
@@ -30,6 +33,9 @@ class technology(models.Model):
         string='Página oficial', help='Página web oficial')
 
     developers = fields.Many2many(string ='Desarrolladores', comodel_name='dev_meet.developer')
+
+    interested_developers = fields.Many2many(string ='Desarrolladores interesados', comodel_name='dev_meet.developer', relation='interested_technologies')
+
     events = fields.Many2many(string='Eventos', comodel_name='dev_meet.event', inverse_name='technologies')
 
     

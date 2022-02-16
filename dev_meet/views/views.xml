@@ -78,7 +78,7 @@
     <menuitem name="Eventos" id="dev_meet.menu_event_list" parent="dev_meet.menu_root"
               action="dev_meet.action_event_window"/>
 
-    <menuitem name="Eventos" id="dev_meet.menu_room_list" parent="dev_meet.menu_root"
+    <menuitem name="Salas" id="dev_meet.menu_room_list" parent="dev_meet.menu_root"
               action="dev_meet.action_room_window"/>
 
   </data>
