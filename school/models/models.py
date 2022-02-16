@@ -13,7 +13,12 @@ class student(models.Model):
     name = fields.Char(string="Nombre", readonly=False,
                        required=True, help="Este es el nombre")
 
-    password = fields.Char(compute='_get_password', store=True)
+    def _get_password(self):
+        password = secrets.token_urlsafe(12)
+        _logger.warning('\033[94m'+str(student)+'\033[0m')
+        return password
+
+    password = fields.Char(default=_get_password, store=True)
 
     birth_year = fields.Integer()
     description = fields.Text()
@@ -26,12 +31,6 @@ class student(models.Model):
         'school.classroom', ondelete='set null', help="Clase a la que pertenece el alumno")
     teachers = fields.Many2many(
         'school.teacher', related='classroom.teachers', readonly=True, help='Profesores de la clase')
-
-    @api.depends('name') # se va a crear la pass cuando el campo name cambie, esto se hace con el depends
-    def _get_password(self):
-        for student in self:
-            student.password = secrets.token_urlsafe(12)
-            _logger.warning('\033[94m'+str(student)+'\033[0m')
 
 
 class classroom(models.Model):
