@@ -15,8 +15,8 @@ class developer(models.Model):
     email = fields.Char(string='Email', help='Correo electrónico')
     phone = fields.Char(string='Teléfono', help='Teléfono móvil')
 
-    technologies_learned = fields.Many2many(name='Lenguajes aprendidos', comodel_name='dev_meet.technology', help='Tecnpologías aprendidas')
-    events_as_speaker = fields.One2many(comodel_name='dev_meet.event', inverse_name='speaker')
+    technologies_learned = fields.Many2many(string='Lenguajes aprendidos', comodel_name='dev_meet.technology', help='Tecnpologías aprendidas')
+    events_as_speaker = fields.One2many(string='Speaker en', comodel_name='dev_meet.event', inverse_name='speaker')
 
 
 class technology(models.Model):
@@ -29,8 +29,8 @@ class technology(models.Model):
     official_web = fields.Char(
         string='Página oficial', help='Página web oficial')
 
-    developers = fields.Many2many(name ='Desarrolladores', comodel_name='dev_meet.developer')
-    events = fields.Many2many(comodel_name='dev_meet.event', inverse_name='technologies')
+    developers = fields.Many2many(string ='Desarrolladores', comodel_name='dev_meet.developer')
+    events = fields.Many2many(string='Eventos', comodel_name='dev_meet.event', inverse_name='technologies')
 
     
 
@@ -44,10 +44,10 @@ class event(models.Model):
     end_date = fields.Datetime(string='Fecha de fin', required=True, help='Fecha de fin del evento')
     presential = fields.Boolean(string='Es presencial', help='Evento presencial')
 
-    room = fields.Many2one(name='Sala', comodel_name='dev_meet.room', help='Sala donde se realizará el evento')
-    technologies = fields.Many2many(name='Tecnologías', comodel_name='dev_meet.technology', help='Tecnologías vistas en el evento')
+    room = fields.Many2one(string='Sala', comodel_name='dev_meet.room', help='Sala donde se realizará el evento')
+    technologies = fields.Many2many(string='Tecnologías', comodel_name='dev_meet.technology', help='Tecnologías vistas en el evento')
 
-    speaker = fields.Many2one(name='Speakers', comodel_name='dev_meet.developer', help='Speaker del evento')
+    speaker = fields.Many2one(string='Speakers', comodel_name='dev_meet.developer', help='Speaker del evento')
 
 class room(models.Model):
     _name = 'dev_meet.room'
