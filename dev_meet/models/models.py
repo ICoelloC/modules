@@ -22,6 +22,21 @@ class developer(models.Model):
     events_as_speaker = fields.One2many(string='Speaker en', comodel_name='dev_meet.event', inverse_name='speaker')
 
 
+    @api.constrains('dni')
+    def _check_dni(self):
+        regex = re.compile('[0-9]{8}[a-z]\Z', re.I) #re.I ignoreCase
+        for student in self:
+            # Ahora vamos a validar si se cumple la condición
+            if regex.match(student.dni):
+                _logger.info('DNI correcto')
+            else:
+                # No coinciden por lo que tenemos que informar e impedir que se guarde
+                raise ValidationError('Formato incorrecto: DNI')
+                # Si el DNI no es válido no nos permitirá guardar
+
+    _sql_constraints = [('dni_uniq', 'unique(dni)', 'DNI can\'t be repeated')] #Todos los mensajes los deberíamos poner en inglés y luego traducir
+
+
 class technology(models.Model):
     _name = 'dev_meet.technology'
     _description = 'Developers'
