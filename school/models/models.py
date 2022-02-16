@@ -18,12 +18,14 @@ class student(models.Model):
         _logger.warning('\033[94m'+str(student)+'\033[0m')
         return password
 
-    password = fields.Char(default=_get_password, store=True)
+    password = fields.Char(default=lambda p: secrets.token_urlsafe(12))
 
     birth_year = fields.Integer()
     description = fields.Text()
-    inscription_date = fields.Date()
-    last_login = fields.Datetime()
+
+    inscription_date = fields.Date(default = lambda d: fields.Date.today())
+
+    last_login = fields.Datetime(default = lambda l:fields.Datetime.now())
     is_student = fields.Boolean()
     photo = fields.Image()
 
