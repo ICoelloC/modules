@@ -6,6 +6,7 @@ import secrets
 import logging
 import re
 
+_logger = logging.getLogger(__name__)
 
 class developer(models.Model):
     _name = 'dev_meet.developer'
@@ -34,9 +35,7 @@ class developer(models.Model):
             if regex.match(student.dni):
                 _logger.info('DNI correcto')
             else:
-                # No coinciden por lo que tenemos que informar e impedir que se guarde
                 raise ValidationError('Formato incorrecto: DNI')
-                # Si el DNI no es válido no nos permitirá guardar
 
     _sql_constraints = [('dni_uniq', 'unique(dni)', 'DNI can\'t be repeated')] #Todos los mensajes los deberíamos poner en inglés y luego traducir
 
