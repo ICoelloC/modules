@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+import secrets
+import logging
+import re
+
+_logger = logging.getLogger(__name__)
 
 
 class student(models.Model):
@@ -9,15 +15,45 @@ class student(models.Model):
 
     name = fields.Char(string="Nombre", readonly=False,
                        required=True, help="Este es el nombre")
+
+    def _get_password(self):
+        password = secrets.token_urlsafe(12)
+        _logger.warning('\033[94m'+str(student)+'\033[0m')
+        return password
+
+    password = fields.Char(default=lambda p: secrets.token_urlsafe(12))
+
     birth_year = fields.Integer()
+
+    dni = fields.Char(string="DNI")
+
     description = fields.Text()
-    inscription_date = fields.Date()
-    last_login = fields.Datetime()
+
+    inscription_date = fields.Date(default=lambda d: fields.Date.today())
+
+    last_login = fields.Datetime(default=lambda l: fields.Datetime.now())
     is_student = fields.Boolean()
     photo = fields.Image()
 
-    classroom = fields.Many2one('school.classroom', ondelete='set null', help="Clase a la que pertenece el alumno")
-    teachers = fields.Many2many('school.teacher', related='classroom.teachers', readonly=True, help='Profesores de la clase')
+    classroom = fields.Many2one(
+        'school.classroom', ondelete='set null', help="Clase a la que pertenece el alumno")
+    teachers = fields.Many2many(
+        'school.teacher', related='classroom.teachers', readonly=True, help='Profesores de la clase')
+
+    @api.constrains('dni')
+    def _check_dni(self):
+        regex = re.compile('[0-9]{8}[a-z]\Z', re.I) #re.I ignoreCase
+        for student in self:
+            # Ahora vamos a validar si se cumple la condición
+            if regex.match(student.dni):
+                _logger.info('DNI correcto')
+            else:
+                # No coinciden por lo que tenemos que informar e impedir que se guarde
+                raise ValidationError('Formato incorrecto: DNI')
+                # Si el DNI no es válido no nos permitirá guardar
+
+    _sql_constraints = [('dni_uniq', 'unique(dni)', 'DNI can\'t be repeated')] #Todos los mensajes los deberíamos poner en inglés y luego traducir
+
 
 
 class classroom(models.Model):
@@ -26,17 +62,36 @@ class classroom(models.Model):
 
     name = fields.Char()
 
-    students = fields.One2many(string='Alumnos', comodel_name='school.student', inverse_name='classroom')
-    teachers = fields.Many2many(comodel_name='school.teacher', relation='teachers_classroom', column1='classroom_id', column2='teacher_id')
+    students = fields.One2many(
+        string='Alumnos', comodel_name='school.student', inverse_name='classroom')
+    teachers = fields.Many2many(comodel_name='school.teacher',
+                                relation='teachers_classroom', column1='classroom_id', column2='teacher_id')
 
-    teachers_last_year = fields.Many2many(comodel_name='school.teacher', relation='teachers_classroom_ly', column1='classroom_id', column2='teacher_id')
+    teachers_last_year = fields.Many2many(
+        comodel_name='school.teacher', relation='teachers_classroom_ly', column1='classroom_id', column2='teacher_id')
+    coordinator = fields.Many2one(
+        comodel_name='school.teacher', compute='_get_coordinator')
+    all_teachers = fields.Many2many(
+        comodel_name='school.teacher', compute='_get_all_teachers')
+
+    def _get_coordinator(self):
+        for classroom in self:
+            if len(classroom.teachers) > 0:
+                classroom.coordinator = classroom.teachers[0].id
+
+    def _get_all_teachers(self):
+        for classroom in self:
+            classroom.all_teachers = classroom.teachers + classroom.teachers_last_year
+
 
 class teacher(models.Model):
     _name = 'school.teacher'
     _description = 'Los profesores'
 
     name = fields.Char()
-    classrooms = fields.Many2many(comodel_name='school.classroom', relation='teachers_classroom', column1='teacher_id', column2='classroom_id')
+    classrooms = fields.Many2many(comodel_name='school.classroom',
+                                  relation='teachers_classroom', column1='teacher_id', column2='classroom_id')
     students = fields.Many2many('school.student')
 
-    classrooms_last_year = fields.Many2many(comodel_name='school.classroom', relation='teachers_classroom_ly', column1='teacher_id', column2='classroom_id')
+    classrooms_last_year = fields.Many2many(
+        comodel_name='school.classroom', relation='teachers_classroom_ly', column1='teacher_id', column2='classroom_id')
