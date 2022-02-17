@@ -75,6 +75,8 @@ class classroom(models.Model):
         for classroom in self:
             if len(classroom.teachers) > 0:
                 classroom.coordinator = classroom.teachers[0].id
+            else:
+                classroom.coordinator = None
 
     def _get_all_teachers(self):
         for classroom in self:
