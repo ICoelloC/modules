@@ -54,7 +54,7 @@ class technology(models.Model):
 
     interested_developers = fields.Many2many(string ='Desarrolladores interesados', comodel_name='dev_meet.developer', relation='interested_technologies')
 
-    events = fields.Many2many(string='Eventos', comodel_name='dev_meet.event', inverse_name='technologies')
+    events = fields.Many2many(string='Eventos', comodel_name='dev_meet.event')
 
     
 
