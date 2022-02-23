@@ -3,7 +3,7 @@
     <!-- explicit list view definition -->
 
     <record model="ir.ui.view" id="dev_meet.developer_list">
-      <field name="name">DevMeet list</field>
+      <field name="name">Developers</field>
       <field name="model">dev_meet.developer</field>
       <field name="arch" type="xml">
         <tree>
@@ -11,6 +11,42 @@
           <field name="nickname"/>
           <field name="name"/>
           <field name="email"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="dev_meet.technology_list">
+      <field name="name">Technologies</field>
+      <field name="model">dev_meet.technology</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="official_web"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="dev_meet.event_list">
+      <field name="name">Events</field>
+      <field name="model">dev_meet.event</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="start_date"/>
+          <field name="end_date"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="dev_meet.rooms_list">
+      <field name="name">Rooms</field>
+      <field name="model">dev_meet.room</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="room_number"/>
+          <field name="name"/>
+          <field name="capacity"/>
         </tree>
       </field>
     </record>
