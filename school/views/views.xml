@@ -2,14 +2,18 @@
   <data>
     <!-- explicit list view definition -->
 
+    <!-- explicit list view definition -->
+
     <record model="ir.ui.view" id="school.student_list">
       <field name="name">school.student list</field>
       <field name="model">school.student</field>
       <field name="arch" type="xml">
-        <tree decoration-info="birth_year>2000" decoration-warning="birth_year&lt;1990"> 
+        <tree>
+          <field name="nickname"/>
           <field name="name"/>
-          <field name="password" />
-          <field name="birth_year" sum="Total"/>
+          <field name="phone"/>
+          <field name="email"/>
+          <field name="birth_year" visible="false"/>
         </tree>
       </field>
     </record>
