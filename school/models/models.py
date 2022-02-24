@@ -110,3 +110,16 @@ class teacher(models.Model):
 
     classrooms_last_year = fields.Many2many(
         comodel_name='school.classroom', relation='teachers_classroom_ly', column1='teacher_id', column2='classroom_id')
+
+class seminar(models.Model):
+    _name = 'school.seminar'
+    _description = 'Los seminarios'
+
+    name = fields.Char()
+    date = fields.Datetime()
+    finish = fields.Datetime()
+    hours = fields.Integer()
+
+    classroom = fields.Many2one('school.classroom')
+
+    

@@ -22,7 +22,6 @@
       <field name="arch" type="xml">
         <form>
           <header>
-
             <field name="state" widget="statusbar"></field>
           </header>
           <sheet> 
@@ -31,8 +30,6 @@
                 <div class="o_form_field o_stat_info">
                   <span class="o_stat_value">
                     <field name="password" string="Password"/>
-                    <!-- En el ejemplo va a mostrar sólo una parte porque tiene unas dimensiones concretas
-                    -->
                   </span>
                   <span class="o_stat_text">Password</span>
                 </div>
@@ -48,7 +45,7 @@
                 <field name="dni" />
                 <field name="description" />
               </group>
-              <group> <!-- Quito el estado porque sólo era un ejemplo, puedo añadir botones que cambian de estado...-->
+              <group>
                 <separator string="Inscription Data"></separator>
                 <field name="inscription_date" />
                 <field name="last_login" />
@@ -56,15 +53,12 @@
                 <field name="classroom" 
                        attrs="{'invisible':[('is_student','=',False)],
                                'required':[('is_student','=',True)]}"/>
-                <!--Podemos añadir más atributos condicionales y también por ejemplo que sean de solo lectura en casos concretos...-->
-                <field name="level" /> <!--Si pongo el filtro en la vista tarda más en aplicarse que si lo pongo en el modelo, queda a decisión del programador. Uno es suficiente-->
+                <field name="level" />
               </group>
             </group>
             <notebook>
               <page string="Teachers">
                 <field name="teachers">
-                  <!-- Si en la vista del estudiante no queremos que aparezca el campo
-                  phone del profesor, pero en la vista tree del profesor sí aparecerá-->
                   <tree>
                     <field name="name"/>
                     <field name="topic"/>
@@ -183,6 +177,23 @@
     </record>
 
 
+    <record id="school.seminar_calendar" model="ir.ui.view">
+      <field name="name">school.seminar calendar</field>
+      <field name="model">school.seminar</field>
+      <field name="arch" type="xml">
+        <calendar string="Seminar calendar" date_start="date" date_stop="finish" color="classroom">
+        <!-- El color no lo elegimos, se calculará en función del identificador 
+        también se puede poner date_start y date_delay, indicando en este atributo la duración en horas, por lo que podría
+        tomar un field que indicase las horas por ejemplo date_delay="hours"
+        
+        Podemos establecer también cuánto dura un día, por defecto 8 horas, pero se puede cambiar.
+        También hay una opción mode, para mostrar en modo días, meses, semanas...
+        tenemos que crear el menú y el action-->
+          <field name="name"/>
+        </calendar>
+      </field>
+    </record>
+
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="school.action_student_window">
@@ -201,6 +212,12 @@
       <field name="name">Profesores</field>
       <field name="res_model">school.teacher</field>
       <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="school.action_seminar_window">
+      <field name="name">Seminarios</field>
+      <field name="res_model">school.seminar</field>
+      <field name="view_mode">calendar,tree,form</field>
     </record>
 
 
@@ -236,5 +253,7 @@
       action="school.action_classroom_window"/>
     <menuitem name="Teachers" id="school.menu_teacher_list" parent="school.menu_1"
       action="school.action_teacher_window"/>
+    <menuitem name="Seminars" id="school.menu_seminars_list" parent="school.menu_1"
+      action="school.action_seminar_window"/>
   </data>
 </odoo>
